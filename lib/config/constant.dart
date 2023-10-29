@@ -25,8 +25,9 @@ const String ERROR_OCCURED = 'Error occured, please try again later';
 const int LIMIT_PAGE = 8;
 
 const String GLOBAL_URL = 'https://ijtechnology.net/assets/images/api/devkit';
-const String LOCAL_URL = 'http://192.168.0.155:8900';
-const String CLOUD_URL = 'http://emmsg.co.kr:8900';
+const String LOCAL_URL = 'http://192.168.0.155:8970';
+const String CLOUD_URL = 'http://192.168.0.155:8970';
+//const String CLOUD_URL = 'http://emmsg.co.kr:8970';
 const String HYUNDAI_URL = 'https://www.hyundaielevator.com/upload';
 
 const String LOCAL_IMAGES_URL = 'assets';
