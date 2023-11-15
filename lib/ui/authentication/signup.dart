@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:findobj/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:findobj/config/constant.dart';
 import 'package:findobj/config/global_style.dart';
 import 'package:findobj/ui/authentication/signin.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
+
+
+import 'package:http/http.dart' as http;
 
 class SignupPage extends StatefulWidget {
   final bool fromList;
@@ -14,8 +21,19 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+
+
+  String _lsEtUserid = '';
+  String _lsEtEmail = '';
+  String _lsEtName = '';
+  String _lsEtPass = '';
+
   TextEditingController _etEmail = TextEditingController();
   TextEditingController _etName = TextEditingController();
+  TextEditingController _etUserid = TextEditingController();
+  TextEditingController _etPass = TextEditingController();
+
+
   bool _obscureText = true;
   IconData _iconVisible = Icons.visibility_off;
 
@@ -35,12 +53,58 @@ class _SignupPageState extends State<SignupPage> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _etEmail.dispose();
-    _etName.dispose();
-    super.dispose();
+
+
+
+  Future user_insert() async {
+    String _custcd = 'JKY'; //await  SessionManager().get("custcd");
+
+    var uritxt = CLOUD_URL + '/daegun/usersave';
+    var encoded = Uri.encodeFull(uritxt);
+    Uri uri = Uri.parse(encoded);
+     _lsEtUserid = _etUserid.text;
+     _lsEtEmail = _etEmail.text;
+     _lsEtName = _etName.text;
+     _lsEtPass = _etPass.text;
+    //print('_lsEtUserid-->' + _lsEtUserid);
+    final response = await http.post(
+      uri,
+      headers: <String, String> {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept' : 'application/json'
+      },
+      body: <String, String> {
+        'custcd': _custcd,
+        'userid': _lsEtUserid,
+        'email': _lsEtEmail,
+        'name': _lsEtName,
+        'pass': _lsEtPass
+      },
+    );
+    if(response.statusCode == 200){
+      try{
+        // var result =  jsonDecode(utf8.decode(response.bodyBytes))  ;
+        var result =  utf8.decode(response.bodyBytes);
+        //print('result-->' + result);
+        if (result == "SUCCESS"){
+           return true;
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage01()));
+        }else{
+          return false;
+        }
+        return ;
+      }catch(e){
+        // print(e.toString());
+        showAlertDialog(context, e.toString() + " : 관리자에게 문의하세요");
+      }
+    }else{
+      //만약 응답이 ok가 아니면 에러를 던집니다.
+      throw Exception('불러오는데 실패했습니다');
+    }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +126,7 @@ class _SignupPageState extends State<SignupPage> {
               Text('Sign Up', style: GlobalStyle.authTitle),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                controller: _etEmail,
+                controller: _etUserid,
                 style: TextStyle(color: CHARCOAL),
                 onChanged: (textValue) {
                   setState(() {});
@@ -125,6 +189,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
               TextField(
                 obscureText: _obscureText,
+                controller: _etPass,
                 style: TextStyle(color: CHARCOAL),
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
@@ -163,7 +228,9 @@ class _SignupPageState extends State<SignupPage> {
                       if(!widget.fromList){
                         Navigator.pop(context);
                       }
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+
+                      USERINFO_Save(context);
+                      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -175,6 +242,7 @@ class _SignupPageState extends State<SignupPage> {
                             color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
+
                     )
                 ),
               ),
@@ -203,4 +271,43 @@ class _SignupPageState extends State<SignupPage> {
           ),
         ));
   }
+
+  void USERINFO_Save(BuildContext context) async {
+    var result = await user_insert();
+    if(result){
+      print("저장성공!");
+      Fluttertoast.showToast(msg: "등록되었습니다.");
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage()));
+    }else{
+      print("저장error!");
+      Fluttertoast.showToast(msg: "등록오류");
+      return ;
+    }
+
+  }
+
+
+
+  void showAlertDialog(BuildContext context, String as_msg) async {
+    String result = await showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('회원가입'),
+          content: Text(as_msg),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.pop(context, "확인");
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }

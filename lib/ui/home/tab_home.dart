@@ -13,6 +13,9 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../app01/AppPage01.dart';
+import '../app01/AppPage02.dart';
+
 class TabHomePage extends StatefulWidget {
   @override
   _Home1PageState createState() => _Home1PageState();
@@ -38,31 +41,15 @@ class _Home1PageState extends State<TabHomePage> {
   void initState()  {
     setData();
     //GLOBAL_URL+'/home_banner/1.jpg'));  LOCAL_IMAGES_URL+'/elvimg/1.jpg'
-    _bannerData.add(BannerSliderModel(id: 1, image: HYUNDAI_URL + '/product_gallery/THE EL_main_Web(0).jpg'));
-    _bannerData.add(BannerSliderModel(id: 2, image: HYUNDAI_URL + '/product_gallery/THE EL_4(1).jpg'));
-    _bannerData.add(BannerSliderModel(id: 3, image: HYUNDAI_URL + '/product_gallery/THE EL_3(1).jpg'));
-    _bannerData.add(BannerSliderModel(id: 4, image: HYUNDAI_URL + '/product_gallery/THE EL_2(1).jpg'));
-    _bannerData.add(BannerSliderModel(id: 5, image: HYUNDAI_URL + '/product_characteristic/특징_02(0).jpg'));
+    _bannerData.add(BannerSliderModel(id: 3, image: LOST112_URL + '/qnb_icon1.png'));
+    _bannerData.add(BannerSliderModel(id: 4, image: LOST112_URL + '/qnb_icon2.png'));
+    _bannerData.add(BannerSliderModel(id: 5, image: LOST112_URL + '/qnb_icon3.png'));
+    _bannerData.add(BannerSliderModel(id: 2, image: LOST112_URL + '/main_banner_pr.png'));
+    _bannerData.add(BannerSliderModel(id: 1, image: LOST112_URL + '/mobile_banner.png'));
 
-    _categoryData.add(CategoryModel(id: 1, name: '고 장 접 수', image: GLOBAL_URL+'/menu/store.png', color:0xD3D3D3));
-    _categoryData.add(CategoryModel(id: 2, name: '고 장 처 리', image: GLOBAL_URL+'/menu/products.png', color:0xD3D3D3));
-    _categoryData.add(CategoryModel(id: 3, name: '점 검 계 획', image: GLOBAL_URL+'/menu/buy_online.png', color:0xD3D3D3));
-    _categoryData.add(CategoryModel(id: 4, name: '점 검 조 치', image: GLOBAL_URL+'/menu/apply_credit.png', color:0xD3D3D3));
-
-    _categoryData.add(CategoryModel(id: 5, name: '도 면 자 료', image: GLOBAL_URL+'/menu/credit_application_status.png', color:0xffffff));
-    _categoryData.add(CategoryModel(id: 6, name: '부 품 자 료', image: GLOBAL_URL+'/menu/credit_payment.png', color:0xffffff));
-    _categoryData.add(CategoryModel(id: 7, name: '기 타 자 료', image: GLOBAL_URL+'/menu/commission.png', color:0xffffff));
-    _categoryData.add(CategoryModel(id: 8, name: '현장정보\n승강기번호\n비상통화/조회', image: GLOBAL_URL+'/menu/contact_us.png', color:0xffffff));
-
-    _categoryData.add(CategoryModel(id: 9, name: '수 리\n노 하 우', image: GLOBAL_URL+'/menu/store.png', color:0xD3D3D3));
-    _categoryData.add(CategoryModel(id: 10, name: '부 품\n가 이 드', image: GLOBAL_URL+'/menu/products.png', color:0xD3D3D3));
-    _categoryData.add(CategoryModel(id: 11, name: '수 리\nQ  &  A', image: GLOBAL_URL+'/menu/buy_online.png', color:0xD3D3D3));
-    _categoryData.add(CategoryModel(id: 12, name: '직 원 정 보', image: GLOBAL_URL+'/menu/apply_credit.png', color:0xD3D3D3));
-
-    _categoryData.add(CategoryModel(id: 13, name: '고 장 이 력', image: GLOBAL_URL+'/menu/credit_application_status.png', color:0xffffff));
-    _categoryData.add(CategoryModel(id: 14, name: '고 장 통 계', image: GLOBAL_URL+'/menu/credit_payment.png', color:0xffffff));
-    _categoryData.add(CategoryModel(id: 15, name: '작 업 일 보', image: GLOBAL_URL+'/menu/commission.png', color:0xffffff));
-    _categoryData.add(CategoryModel(id: 16, name: '공 지 사 항', image: GLOBAL_URL+'/menu/point.png', color:0xffffff));
+    _categoryData.add(CategoryModel(id: 1, name: '분 실 물 \n등 록', image: GLOBAL_URL+'/menu/store.png', color:0xD3D3D3));
+    _categoryData.add(CategoryModel(id: 2, name: '분 실 물 \n조 회', image: GLOBAL_URL+'/menu/products.png', color:0xD3D3D3));
+    _categoryData.add(CategoryModel(id: 3, name: '사 용 자 \n정 보', image: GLOBAL_URL+'/menu/buy_online.png', color:0xD3D3D3));
 
 
 
@@ -95,7 +82,7 @@ class _Home1PageState extends State<TabHomePage> {
               IconButton(
                   icon: Icon(Icons.help_outline),
                   onPressed: () async {
-                    const url = 'http://emmsg.co.kr:8080/actas/about_privacy';
+                    const url = 'https://lost112.go.kr/index.do';
                     if (await canLaunch(url)) {
                     await launch(url);
                     } else {
@@ -245,7 +232,7 @@ bottomNavigationBar: SizedBox.shrink(),
       shrinkWrap: true,
       crossAxisSpacing: 0,
       mainAxisSpacing: 0,
-      crossAxisCount: 4,
+      crossAxisCount: 3,
       children: List.generate(_categoryData.length, (index) {
         return OverflowBox(
           maxHeight: double.infinity,
@@ -254,17 +241,17 @@ bottomNavigationBar: SizedBox.shrink(),
                 // Fluttertoast.showToast(msg: 'Click '+_categoryData[index].name.replaceAll('\n', ' '), toastLength: Toast.LENGTH_SHORT);
                 String ls_name = _categoryData[index].name.replaceAll('\n', ' ');
                 switch (ls_name){
-                  case '고 장 접 수' :
-                     // Navigator.push(context, MaterialPageRoute(builder: (context) => AppPager16()));
+                  case '분 실 물  등 록' :
+                    //print("분실물등록");
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage01()));
                     break;
-                  case '고 장 처 리' :
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
+                  case '분 실 물  조 회' :
+                    //print("분실물조 회");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
                     break;
-                  case '점 검 계 획' :
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => AppPager15()));
-                    break;
-                  case '점 검 조 치' :
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => AppPager13()));
+                  case '사 용 자  정 보' :
+                    //print("사 용 자  정 보");
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => AppPager03()));
                     break;
                   default:
                     break;
@@ -349,3 +336,4 @@ bottomNavigationBar: SizedBox.shrink(),
 
 
 }
+
