@@ -8,6 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../config/constant.dart';
 import '../../../config/global_style.dart';
+import '../home/tab_home.dart';
 import 'AppPage02.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -162,6 +163,7 @@ class _AppPage01State extends State<AppPage01> {
   @override
   Widget build(BuildContext context){
 
+    int _selectedIndex = 0;  //bottom in
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -375,7 +377,6 @@ class _AppPage01State extends State<AppPage01> {
                                 Navigator.pop(context);
                                 var result = await save_data();
                                 if (result){
-
                                   Get.off(AppPage02());
                                   //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
                                   //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AppPage02()));
@@ -411,6 +412,41 @@ class _AppPage01State extends State<AppPage01> {
 
         ],
       ),
+
+
+      bottomNavigationBar:  BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          if (index == 0) { // 1번째 아이템을 눌렀을 때
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => TabHomePage()));          }
+          if (index == 1) { // 2번째 아이템을 눌렀을 때
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => AppPage01()));          }
+          if (index == 2) { // 3번째 아이템을 눌렀을 때
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => AppPage02()));            }
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '홈',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: '분실물등록',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: '분실물조회',
+          ),
+        ],
+      ),
+
+
 
     );
   }

@@ -46,7 +46,9 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
   String _lsLocation     = "";
   bool _lsModify = false;
   bool _lsUpdate = false;
-  int _lsSeq     = 0;
+  bool _lsDelete = false;
+  String _lsSeq     = "";
+  int _llSeq     = 0;
 
 
   TextEditingController _etItemmemo = TextEditingController();
@@ -78,7 +80,7 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
   void setData(){
     // _selectedValue = "001";
     // _selectedValue2 = "분실";
-    _lsSeq= widget.itemData.seq;
+    _llSeq= widget.itemData.seq;
     _etItemmemo = TextEditingController(text:widget.itemData.itemmemo);
     _etSubject = TextEditingController(text:widget.itemData.itemsubject);
     _etInputdate = TextEditingController(text:widget.itemData.inputdate);
@@ -87,6 +89,7 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
     _selectedValue= widget.itemData.flag;
     _selectedValue2= widget.itemData.flagnm;
 
+    print('_llSeq-->' + _llSeq.toString());
     if(widget.itemData.pernm == _usernm){
       _lsModify = true;
     }
@@ -94,7 +97,7 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
 
   Future update_data() async {
     _custcd = await  SessionManager().get("custcd");
-    var uritxt = CLOUD_URL + '/daegun/itemsave';
+    var uritxt = CLOUD_URL + '/daegun/itemupdate';
     var encoded = Uri.encodeFull(uritxt);
     Uri uri = Uri.parse(encoded);
     if(!_lsModify) {
@@ -128,7 +131,15 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
     _lsFlag = _selectedValue;
     _lsLocation = _etLocation.text;
     _lsPernm = _usernm ;
-    // print('_lsFlag-->' + _lsFlag);
+    _lsSeq = _llSeq.toString();
+
+     print('_lsInputdate-->' + _lsInputdate);
+    print('_lsSubject-->' + _lsSubject);
+    print('_lsItemMemo-->' + _lsItemMemo);
+    print('_lsFlag-->' + _lsFlag);
+    print('_lsLocation-->' + _lsLocation);
+    print('_lsPernm-->' + _lsPernm);
+    print('_lsSeq-->' + _lsSeq);
 
     final response = await http.post(
       uri,
@@ -143,7 +154,8 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
         'itemmemo': _lsItemMemo,
         'flag': _lsFlag,
         'pernm': _lsPernm,
-        'location': _lsLocation
+        'location': _lsLocation,
+        'seq': _lsSeq
       },
     );
     if(response.statusCode == 200){
@@ -165,7 +177,7 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
       }
     }else{
       //만약 응답이 ok가 아니면 에러를 던집니다.
-      throw Exception('불러오는데 실패했습니다');
+      throw Exception('업데이트중 오류가났습니다.');
     }
   }
 
@@ -174,6 +186,42 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
     if(!_lsModify) {
       showAlertDialog(context, '등록자만 삭제할 수 있습니다.');
       return false;
+    }
+    var uritxt = CLOUD_URL + '/daegun/itemdelete';
+    var encoded = Uri.encodeFull(uritxt);
+    Uri uri = Uri.parse(encoded);
+    _lsSeq = _llSeq.toString();
+
+    final response = await http.post(
+      uri,
+      headers: <String, String> {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept' : 'application/json'
+      },
+      body: <String, String> {
+        'seq': _lsSeq
+      },
+    );
+    if(response.statusCode == 200){
+      try{
+        // var result =  jsonDecode(utf8.decode(response.bodyBytes))  ;
+        var result =  utf8.decode(response.bodyBytes);
+        print('result-->' + result);
+        if (result == "SUCCESS"){
+          _lsDelete = true;
+          return true;
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage01()));
+        }else{
+          _lsDelete = false;
+          return false;
+        }
+      }catch(e){
+        // print(e.toString());
+        showAlertDialog(context, e.toString() + " : 관리자에게 문의하세요");
+      }
+    }else{
+      //만약 응답이 ok가 아니면 에러를 던집니다.
+      throw Exception('삭제중 오류가났습니다.');
     }
   }
 
@@ -390,12 +438,14 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
                       actions: <Widget>[
                         TextButton(
                           child: Text('OK'),
-                          onPressed: () {
-                            update_data();
-                            if(_lsUpdate){
-                              Get.off(AppPage02());
+                          onPressed: () async {
+                            var result = await update_data();
+                            if (result){
+                              Get.off(() => AppPage02());
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
+                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AppPage02()));
                             }else{
-                              Navigator.pop(context, "취소");
+                              Fluttertoast.showToast(msg: "등록오류");
                             }
                           },
                         ),
@@ -418,9 +468,15 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
                       actions: <Widget>[
                         TextButton(
                           child: Text('OK'),
-                          onPressed: () {
-                            delete_data();
-                            Get.off(AppPage02());
+                          onPressed: () async {
+                            var result = await delete_data();
+                            if (result){
+                              Get.off(() => AppPage02());
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
+                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AppPage02()));
+                            }else{
+                              Fluttertoast.showToast(msg: "등록오류");
+                            }
                           },
                         ),
                         TextButton(onPressed: (){
@@ -485,7 +541,7 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('분실물등록'),
+          title: Text('분실물상세내용'),
           content: Text(as_msg),
           actions: <Widget>[
             TextButton(

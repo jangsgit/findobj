@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:findobj/config/constant.dart';
 import 'package:findobj/ui/home/tab_home.dart';
 import 'package:findobj/ui/account/tab_account.dart';
+
+import 'app01/AppPage01.dart';
+import 'app01/AppPage02.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -48,55 +51,40 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           return content;
         }).toList(),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        onTap: (value) {
-          _currentIndex = value;
-          _pageController.jumpToPage(value);
-          debugPrint('${_contentPages}');
-          debugPrint('${_contentPages[_selectedIndex]}');
-          // this unfocus is to prevent show keyboard in the wishlist page when focus on search text field
-          FocusScope.of(context).unfocus();
+
+      bottomNavigationBar:  BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          if (index == 0) { // 1번째 아이템을 눌렀을 때
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => TabHomePage()));          }
+          if (index == 1) { // 2번째 아이템을 눌렀을 때
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => AppPage01()));          }
+          if (index == 2) { // 3번째 아이템을 눌렀을 때
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => AppPage02()));            }
         },
-        selectedFontSize: 8,
-        unselectedFontSize: 8,
-        iconSize: 28,
-        selectedLabelStyle: TextStyle(color: _currentIndex == 1 ? ASSENT_COLOR : PRIMARY_COLOR, fontWeight: FontWeight.bold),
-        unselectedLabelStyle: TextStyle(color: CHARCOAL, fontWeight: FontWeight.bold),
-        selectedItemColor: _currentIndex == 1 ? ASSENT_COLOR : PRIMARY_COLOR,
-        unselectedItemColor: CHARCOAL,
         items: [
           BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(
-                  Icons.home,
-                  color: _currentIndex == 0 ? PRIMARY_COLOR : CHARCOAL
-              )
+            icon: Icon(Icons.refresh),
+            label: '홈',
           ),
           BottomNavigationBarItem(
-              label: '올린분실물',
-              icon: Icon(
-                  Icons.favorite,
-                  color: _currentIndex == 1 ? ASSENT_COLOR : CHARCOAL
-              )
+            icon: Icon(Icons.home),
+            label: '분실물등록',
           ),
           BottomNavigationBarItem(
-              label: '귀하신분',
-              icon: Icon(
-                  Icons.perm_contact_cal,
-                  color: _currentIndex == 2 ? PRIMARY_COLOR : CHARCOAL
-              )
-          ),
-          BottomNavigationBarItem(
-              label: 'Account',
-              icon: Icon(
-                  Icons.person_outline,
-                  color: _currentIndex == 3 ? PRIMARY_COLOR : CHARCOAL
-              )
+            icon: Icon(Icons.person),
+            label: '분실물조회',
           ),
         ],
       ),
+
+
     );
   }
 }

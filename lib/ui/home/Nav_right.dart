@@ -59,7 +59,7 @@ class Nav_right extends StatelessWidget{
                         Icon(Icons.favorite),
                         SizedBox(
                             width: 10),
-                        Text('고장 처리'),
+                        Text('분실물등록'),
                       ]))),
           ListTile(
               title: GestureDetector(
@@ -71,7 +71,7 @@ class Nav_right extends StatelessWidget{
                         Icon(Icons.safety_check),
                         SizedBox(
                             width: 10),
-                        Text('현장 정보'),
+                        Text('분실물조회'),
                       ]))),
           ListTile(
               title: GestureDetector(
