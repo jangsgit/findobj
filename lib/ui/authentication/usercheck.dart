@@ -29,6 +29,7 @@ Future<Map> Usercheck(String userid, String userpw) async{
     await SessionManager().set("userid", userinfo['userid']);
     await SessionManager().set("username", userinfo['username']);
     await SessionManager().set("useyn", userinfo['useyn']);
+    await SessionManager().set("totpoint", userinfo['totpoint']);
     //await SessionManager().set("saupnum", userinfo['saupnum']);
     //await SessionManager().set("phone", userinfo['phone']);
     //await SessionManager().set("actcd", userinfo['actcd']);

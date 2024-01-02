@@ -13,15 +13,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
 
-class AppPage02Deatil extends StatefulWidget {
+class AppPage03Deatil extends StatefulWidget {
   final itemlist_model itemData;
-  const AppPage02Deatil({Key? key, required this.itemData}) : super(key: key);
+  const AppPage03Deatil({Key? key, required this.itemData}) : super(key: key);
 
   @override
-  State<AppPage02Deatil> createState() => _AppPage02DeatilState();
+  State<AppPage03Deatil> createState() => _AppPage03DeatilState();
 }
 
-class _AppPage02DeatilState extends State<AppPage02Deatil> {
+class _AppPage03DeatilState extends State<AppPage03Deatil> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
@@ -99,13 +99,7 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
     _selectedValue= widget.itemData.flag;
     _selectedValue2= widget.itemData.flagnm;
 
-    print('_llSeq-->' + _llSeq.toString());
-    if(widget.itemData.pernm == _usernm){
-      _lsModify = true;
-    }
-    if(_usernm == "관리자"){
-      _lsModify_admin = true;
-    }
+
   }
 
   Future update_data() async {
@@ -506,77 +500,7 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
           ),
           SizedBox(
             height: 12,
-          )
-          ,Row(
-            children: [
-              Container(
-                width: 0.38 * MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                child: ElevatedButton(onPressed: () {
-                  /*Navigator.pop(context);*/
-                  showDialog(context: context, builder: (context) {
-                    return AlertDialog(
-                      content: Text('수정하시겠습니까?'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('OK'),
-                          onPressed: () async {
-                            var result = await update_data();
-                            if (result){
-                              Get.off(() => AppPage02());
-                              //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
-                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AppPage02()));
-                            }else{
-                              Fluttertoast.showToast(msg: "등록오류");
-                            }
-                          },
-                        ),
-                        TextButton(onPressed: () {
-                          Navigator.pop(context, "취소");
-                        }, child: Text('Cancel')),
-                      ],
-                    );
-                  });
-                }, child: Text('수정하기')),
-              ),
-              Container(
-                width: 0.38 * MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(left: 20),
-                child: ElevatedButton(onPressed: (){
-                  /*Navigator.pop(context);*/
-                  showDialog(context: context, builder: (context){
-                    return AlertDialog(
-                      content: Text('삭제하시겠습니까?'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('OK'),
-                          onPressed: () async {
-                            var result = await delete_data();
-                            if (result){
-                              Get.off(() => AppPage02());
-                              //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
-                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AppPage02()));
-                            }else{
-                              Fluttertoast.showToast(msg: "등록오류");
-                            }
-                          },
-                        ),
-                        TextButton(onPressed: (){
-                          Navigator.pop(context, "취소");
-                        }, child: Text('Cancel')),
-                      ],
-                    );
-                  });
-                }, child: Text('삭제하기'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.redAccent,
-                    //onPrimary: Colors.black,
-                  ),),
-              ),
-            ],
-          ),
+          ) ,
           SizedBox(
             height: 20,
           ),
@@ -601,44 +525,6 @@ class _AppPage02DeatilState extends State<AppPage02Deatil> {
                   TextStyle(fontSize: 23,  fontWeight: FontWeight.bold, color: BLACK_GREY)),
             ),
           ),
-          Row(
-          children: [
-            _lsModify_admin == false ? Container() : Container(
-              width: 0.38 * MediaQuery.of(context).size.width,
-              child: ElevatedButton(onPressed: (){
-                /*Navigator.pop(context);*/
-                showDialog(context: context, builder: (context){
-                  return AlertDialog(
-                    content: Text('완료 하시겠습니까?'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text('OK'),
-                        onPressed: () async {
-                          var result = await complete_data();
-                          if (result){
-                            Get.off(() => AppPage02());
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
-                            //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AppPage02()));
-                          }else{
-                            Fluttertoast.showToast(msg: "등록오류");
-                          }
-                        },
-                      ),
-                      TextButton(onPressed: (){
-                        Navigator.pop(context, "취소");
-                      }, child: Text('Cancel')),
-                    ],
-                  );
-                });
-              }, child: Text('완료하기'),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  //onPrimary: Colors.black,
-                ),),
-            ),
-            ]
-          )
-
         ],
       ),
 

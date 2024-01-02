@@ -57,7 +57,7 @@ class _SignupPageState extends State<SignupPage> {
 
 
   Future user_insert() async {
-    String _custcd = 'JKY'; //await  SessionManager().get("custcd");
+    String _custcd = 'DGH'; //await  SessionManager().get("custcd");
 
     var uritxt = CLOUD_URL + '/daegun/usersave';
     var encoded = Uri.encodeFull(uritxt);

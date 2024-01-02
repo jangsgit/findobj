@@ -28,6 +28,7 @@ class _AppPage01State extends State<AppPage01> {
   String _selectedValue = "";
   String ? _selectedValue2;
   var _usernm = "";
+  var _userid = "";
 
 
 
@@ -39,17 +40,20 @@ class _AppPage01State extends State<AppPage01> {
   late String now2;
   String _custcd = '';
   String usernm = "";
+  String userid = "";
   String  _lsInputdate = "";
   String _lsSubject  = "";
   String _lsItemMemo = "";
   String _lsFlag     = "";
   String _lsPernm     = "";
   String _lsLocation     = "";
+  String _lsBoxpass  = "";
 
   TextEditingController _etItemmemo = TextEditingController();
   TextEditingController _etSubject = TextEditingController();
   TextEditingController _etInputdate = TextEditingController();
   TextEditingController _etLocation = TextEditingController();
+  TextEditingController _etBoxpass = TextEditingController();
 
 
 
@@ -57,7 +61,7 @@ class _AppPage01State extends State<AppPage01> {
   void initState() {
     super.initState();
     initData();
-    _selectedValue = "001";
+    _selectedValue = "002";
     _etInputdate.text = DateTime.now().toString().substring(0,10);
   }
 
@@ -66,15 +70,17 @@ class _AppPage01State extends State<AppPage01> {
   Future<void> initData() async {
     await sessionData();
     setData();
-    _selectedValue = "001";
-    _selectedValue2 = "분실";
+    _selectedValue = "002";
+    _selectedValue2 = "습득";
     print("_selectedValue--->" + _selectedValue);
   }
   Future<void> sessionData() async {
     String username = await SessionManager().get("username");
+    String userid = await SessionManager().get("userid");
     // 문자열 디코딩
     setState(() {
       _usernm = utf8.decode(username.runes.toList());
+      _userid = utf8.decode(userid.runes.toList());
     });
   }
 
@@ -108,6 +114,10 @@ class _AppPage01State extends State<AppPage01> {
       showAlertDialog(context, '분류를 선택하세요');
       return false;
     }
+    if(_etBoxpass.text.isEmpty || _etBoxpass == "" ) {
+      showAlertDialog(context, '보관함 비밀번호를 입력하세요');
+      return false;
+    }
     //print("_selectedValue2222--->" + _selectedValue);
     _lsInputdate = _etInputdate.text;
     _lsSubject = _etSubject.text;
@@ -115,6 +125,7 @@ class _AppPage01State extends State<AppPage01> {
     _lsFlag = _selectedValue;
     _lsLocation = _etLocation.text;
     _lsPernm = _usernm ;
+    _lsBoxpass = _etBoxpass.text;
     // print('_lsFlag-->' + _lsFlag);
 
     final response = await http.post(
@@ -130,7 +141,9 @@ class _AppPage01State extends State<AppPage01> {
         'itemmemo': _lsItemMemo,
         'flag': _lsFlag,
         'pernm': _lsPernm,
-        'location': _lsLocation
+        'location': _lsLocation,
+        'userid': _userid,
+        'boxpass': _lsBoxpass
       },
     );
     if(response.statusCode == 200){
@@ -182,7 +195,7 @@ class _AppPage01State extends State<AppPage01> {
         children: [
           Card(
             color: SOFT_BLUE,
-            elevation: 5,
+            elevation: 5, //그림자의 깊이를 설정
             child: Container(
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: DropdownButtonHideUnderline(
@@ -295,6 +308,28 @@ class _AppPage01State extends State<AppPage01> {
           ),
           Form(
             child: TextFormField(
+              controller: _etBoxpass,
+              autofocus: true,
+              decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  hintText: '보관함 비밀번호를 작성하세요',
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                      BorderSide(color: PRIMARY_COLOR, width: 2.0)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFCCCCCC)),
+                  ),
+                  labelText: '보관함 비밀번호 *',
+                  labelStyle:
+                  TextStyle(fontSize: 23,  fontWeight: FontWeight.bold, color: BLACK_GREY)),
+
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Form(
+            child: TextFormField(
               autofocus: true,
               controller: _etLocation,
               validator: (value){
@@ -326,16 +361,16 @@ class _AppPage01State extends State<AppPage01> {
             child: TextFormField(
               autofocus: true,
               controller: _etItemmemo,
+              maxLines: 5,
               validator: (value){
                 if(value != null  && value.isEmpty){
                   return '내용을 입력하세요';
-
                 }
                 return null;
               },
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: '내용을 작성하세요',
+                  hintText: '물건을 확인할 수 있는 형태나 색깔등 특징을 구체적으로 적어주세요.',
                   focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       borderSide:
@@ -343,7 +378,7 @@ class _AppPage01State extends State<AppPage01> {
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFCCCCCC)),
                   ),
-                  labelText: '내용 *',
+                  labelText: '습득/분실 내용 *',
                   labelStyle:
                   TextStyle(fontSize: 23,  fontWeight: FontWeight.bold, color: BLACK_GREY)),
             ),
@@ -408,6 +443,24 @@ class _AppPage01State extends State<AppPage01> {
                   ),
                 )
             ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Column(
+            children: [
+              _usernm == null ? Container() :
+              Row(
+                children: [
+                  Text( _usernm,
+                    style: TextStyle(color: SOFT_BLUE ,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                  Text( '님의 습득물/분실물을 찾게되면 포인트를 적립해드립니다. ',
+                    style: TextStyle(color: SOFT_RED ,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ],
           ),
 
         ],

@@ -9,15 +9,16 @@ import '../../../config/constant.dart';
 import '../../../config/global_style.dart';
 import '../home/tab_home.dart';
 import 'AppPage01.dart';
-import 'appPage02Detail.dart';
+import 'AppPage02.dart';
+import 'appPage03Detail.dart';
 
 
-class AppPage02 extends StatefulWidget {
+class AppPage03 extends StatefulWidget {
   @override
-  _AppPage02State createState() => _AppPage02State();
+  _AppPage03State createState() => _AppPage03State();
 }
 
-class _AppPage02State extends State<AppPage02> {
+class _AppPage03State extends State<AppPage03> {
 
   TextEditingController _etSearch2 = TextEditingController();
   List<itemlist_model> itemDataList = itemData;
@@ -55,7 +56,7 @@ class _AppPage02State extends State<AppPage02> {
                         this._subsubsub = '${itemData.itemsubject}';
                       });
 
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02Detail(itemData: itemData)));
+                      //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage03Detail(itemData: itemData)));
 
                     },
                     child: ConstrainedBox(
@@ -136,7 +137,7 @@ class _AppPage02State extends State<AppPage02> {
     if(ls_search == null || ls_search.length == 0){
       ls_search = "%";
     }
-    var uritxt = CLOUD_URL + '/daegun/itemlist';
+    var uritxt = CLOUD_URL + '/daegun/itemlistend';
     var encoded = Uri.encodeFull(uritxt);
     Uri uri = Uri.parse(encoded);
     // try {
@@ -265,7 +266,7 @@ class _AppPage02State extends State<AppPage02> {
           )),*/
           Container(
             padding:EdgeInsets.only(top:16, bottom: 2, left: 10),
-            child: Text('분실습득건수 ${itemData.length} 건',
+            child: Text('찾은 건수 ${itemData.length} 건',
                 style: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.w500, color: CHARCOAL
                 )),
@@ -300,13 +301,8 @@ class _AppPage02State extends State<AppPage02> {
                         return
                           DataRow(
                               onSelectChanged: (value){
-                                if(_usernm == "관리자" || _usernm == item.pernm){
                                   Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => AppPage02Deatil(itemData: item)));
-                                }else{
-                                  showAlertDialog(context, '등록자 또는 관리자만 상세내용을 볼 수 있습니다.');
-                                  return  ;
-                                }
+                                      builder: (context) => AppPage03Deatil(itemData: item)));
                               },
                               color: MaterialStateColor.resolveWith((states){
                                 if (index % 2 == 0){

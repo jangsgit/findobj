@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../app01/AppPage01.dart';
 import '../app01/AppPage02.dart';
+import '../app01/AppPage03.dart';
 
 class TabHomePage extends StatefulWidget {
   @override
@@ -27,6 +28,7 @@ class _Home1PageState extends State<TabHomePage> {
   Color _color1 = Color(0xFF005288);
   Color _color2 = Color(0xFF37474f);
   var _usernm = "";
+  var _totpoint = 0;
   int _currentImageSlider = 0;
 
   List<BannerSliderModel> _bannerData = [];
@@ -49,7 +51,7 @@ class _Home1PageState extends State<TabHomePage> {
 
     _categoryData.add(CategoryModel(id: 1, name: '분 실 물 \n등 록', image: GLOBAL_URL+'/menu/store.png', color:0xD3D3D3));
     _categoryData.add(CategoryModel(id: 2, name: '분 실 물 \n조 회', image: GLOBAL_URL+'/menu/products.png', color:0xD3D3D3));
-    _categoryData.add(CategoryModel(id: 3, name: '사 용 자 \n정 보', image: GLOBAL_URL+'/menu/buy_online.png', color:0xD3D3D3));
+    _categoryData.add(CategoryModel(id: 3, name: '찾 아 간 \n물 건', image: GLOBAL_URL+'/menu/buy_online.png', color:0xD3D3D3));
 
 
 
@@ -62,6 +64,7 @@ class _Home1PageState extends State<TabHomePage> {
     String username = await  SessionManager().get("username");
     // 문자열 디코딩
     _usernm = utf8.decode(username.runes.toList());
+    _totpoint =  await  SessionManager().get("totpoint");
   }
 
   @override
@@ -133,13 +136,27 @@ bottomNavigationBar: SizedBox.shrink(),
                         fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),
-                    Text(' 님 반갑습니다.',
+                    Text(' 님 반갑습니다.       현재 적립 포인트는 '  ,
                       style: TextStyle(
                           color: _color2,
                           fontSize: 16),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                  Text(   _totpoint.toString() ,
+                    style: TextStyle(
+                        color: SOFT_BLUE,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text('점 입니다.  '  ,
+                    style: TextStyle(
+                        color: _color2,
+                        fontSize: 16),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
 
                 ],
             ),
@@ -249,9 +266,9 @@ bottomNavigationBar: SizedBox.shrink(),
                     //print("분실물조 회");
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage02()));
                     break;
-                  case '사 용 자  정 보' :
+                  case '찾 아 간  물 건' :
                     //print("사 용 자  정 보");
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => AppPager03()));
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage03()));
                     break;
                   default:
                     break;
