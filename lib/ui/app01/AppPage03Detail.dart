@@ -418,7 +418,7 @@ class _AppPage03DeatilState extends State<AppPage03Deatil> {
             height: 20,
           ),
           Form(
-            child: TextFormField(
+            child:  _usernm != "관리자" ? Container() : TextFormField(
               controller: _etBoxpass,
               enabled: _lsModify,
               autofocus: true,

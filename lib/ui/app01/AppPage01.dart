@@ -114,9 +114,14 @@ class _AppPage01State extends State<AppPage01> {
       showAlertDialog(context, '분류를 선택하세요');
       return false;
     }
-    if(_etBoxpass.text.isEmpty || _etBoxpass == "" ) {
-      showAlertDialog(context, '보관함 비밀번호를 입력하세요');
-      return false;
+    if(_selectedValue == "002"){
+      if(_etBoxpass.text.isEmpty || _etBoxpass == "" ) {
+        showAlertDialog(context, '보관함 비밀번호를 입력하세요');
+        return false;
+      }
+      _lsBoxpass = _etBoxpass.text;
+    }else{
+      _lsBoxpass = "";
     }
     //print("_selectedValue2222--->" + _selectedValue);
     _lsInputdate = _etInputdate.text;
@@ -125,7 +130,6 @@ class _AppPage01State extends State<AppPage01> {
     _lsFlag = _selectedValue;
     _lsLocation = _etLocation.text;
     _lsPernm = _usernm ;
-    _lsBoxpass = _etBoxpass.text;
     // print('_lsFlag-->' + _lsFlag);
 
     final response = await http.post(
@@ -312,14 +316,14 @@ class _AppPage01State extends State<AppPage01> {
               autofocus: true,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: '보관함 비밀번호를 작성하세요',
+                  hintText: '보관함 비밀번호를 입력하세요',
                   focusedBorder: UnderlineInputBorder(
                       borderSide:
                       BorderSide(color: PRIMARY_COLOR, width: 2.0)),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFCCCCCC)),
                   ),
-                  labelText: '보관함 비밀번호 *',
+                  labelText: '보관함 비밀번호(습득*)',
                   labelStyle:
                   TextStyle(fontSize: 23,  fontWeight: FontWeight.bold, color: BLACK_GREY)),
 
@@ -334,13 +338,13 @@ class _AppPage01State extends State<AppPage01> {
               controller: _etLocation,
               validator: (value){
                 if(value != null  && value.isEmpty){
-                  return '위치를 입력하세요';
+                  return '습득/분실 위치를 입력하세요';
                 }
                 return null;
               },
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: '위치를 입력하세요',
+                  hintText: '습득/분실 위치를 입력하세요',
                   focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       borderSide:
@@ -370,7 +374,7 @@ class _AppPage01State extends State<AppPage01> {
               },
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: '물건을 확인할 수 있는 형태나 색깔등 특징을 구체적으로 적어주세요.',
+                  hintText: '물건을 확인할 수 있는 시간/형태/색깔등 특징을 구체적으로 적어주세요.',
                   focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       borderSide:
@@ -450,12 +454,28 @@ class _AppPage01State extends State<AppPage01> {
           Column(
             children: [
               _usernm == null ? Container() :
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 children: [
                   Text( _usernm,
                     style: TextStyle(color: SOFT_BLUE ,fontSize: 18,fontWeight: FontWeight.bold),
                   ),
-                  Text( '님의 습득물/분실물을 찾게되면 포인트를 적립해드립니다. ',
+                  Text( '님의 습득물을 찾아주게 되면 포인트를 적립해드립니다. ',
+                    style: TextStyle(color: SOFT_RED ,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Text( _usernm,
+                    style: TextStyle(color: SOFT_BLUE ,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                  Text( '님이 분실물을 찾고 완료처리 하시면 포인트를 적립해드립니다. ',
                     style: TextStyle(color: SOFT_RED ,fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                 ],

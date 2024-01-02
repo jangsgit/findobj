@@ -32,6 +32,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _etName = TextEditingController();
   TextEditingController _etUserid = TextEditingController();
   TextEditingController _etPass = TextEditingController();
+  TextEditingController _etWarning = TextEditingController();
 
 
   bool _obscureText = true;
@@ -89,13 +90,15 @@ class _SignupPageState extends State<SignupPage> {
         if (result == "SUCCESS"){
            return true;
           //Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage01()));
+        }else if (result == "DUP"){
+          return false;
         }else{
           return false;
         }
         return ;
       }catch(e){
-        // print(e.toString());
-        showAlertDialog(context, e.toString() + " : 관리자에게 문의하세요");
+        Fluttertoast.showToast(msg: "등록 오류");
+        // print(e.toString()); 
       }
     }else{
       //만약 응답이 ok가 아니면 에러를 던집니다.
@@ -125,7 +128,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
               Text('Sign Up', style: GlobalStyle.authTitle),
               TextFormField(
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
                 controller: _etUserid,
                 style: TextStyle(color: CHARCOAL),
                 onChanged: (textValue) {
@@ -225,9 +228,9 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     onPressed: () {
                       //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePage()), (Route<dynamic> route) => false);
-                      if(!widget.fromList){
-                        Navigator.pop(context);
-                      }
+                      // if(!widget.fromList){
+                      //   Navigator.pop(context);
+                      // }
 
                       USERINFO_Save(context);
                       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -262,9 +265,10 @@ class _SignupPageState extends State<SignupPage> {
                       Text(
                         ' Back to login',
                         style: GlobalStyle.back,
-                      )
+                      ),
                     ],
                   ),
+
                 ),
               ),
             ],
@@ -277,10 +281,14 @@ class _SignupPageState extends State<SignupPage> {
     if(result){
       print("저장성공!");
       Fluttertoast.showToast(msg: "등록되었습니다.");
+      if(!widget.fromList){
+        Navigator.pop(context);
+      }
       Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage()));
     }else{
       print("저장error!");
-      Fluttertoast.showToast(msg: "등록오류");
+      //Fluttertoast.showToast(msg: "아이디 중복");
+      showAlertDialog(context, "같은 아이디가 있습니다.");
       return ;
     }
 

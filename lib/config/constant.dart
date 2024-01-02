@@ -26,8 +26,9 @@ const String ERROR_OCCURED = 'Error occured, please try again later';
 const int LIMIT_PAGE = 8;
 
 const String GLOBAL_URL = 'https://ijtechnology.net/assets/images/api/devkit';
-const String CLOUD_URL = 'http://192.168.0.155:8970';   //155
-//const String CLOUD_URL = 'http://1.215.3.245:8970';
+//const String CLOUD_URL = 'http://192.168.0.155:8970';   //155
+//const String CLOUD_URL = 'http://192.168.0.10:8970';   //155
+const String CLOUD_URL = 'http://1.215.3.245:8970';
 //const String CLOUD_URL = 'http://emmsg.co.kr:8970';
 const String LOST112_URL = 'https://www.lost112.go.kr/images/home/main';
 

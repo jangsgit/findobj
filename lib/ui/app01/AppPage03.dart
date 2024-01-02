@@ -170,6 +170,7 @@ class _AppPage03State extends State<AppPage03> {
             location: alllist[i]['location'],
             boxpass: alllist[i]['boxpass'],
             endmemo: alllist[i]['endmemo'],
+            enddate: alllist[i]['enddate'],
             flagnm: alllist[i]['flagnm']
         );
         setState(() {
@@ -202,7 +203,7 @@ class _AppPage03State extends State<AppPage03> {
         ),
         elevation: GlobalStyle.appBarElevation,
         title: Text(
-          '분실/습득리스트',
+          '분실/습득 완료 리스트',
           style: GlobalStyle.appBarTitle,
         ),
         actions: <Widget>[
@@ -293,7 +294,7 @@ class _AppPage03State extends State<AppPage03> {
                         DataColumn(label: Text('위치')),
                         DataColumn(label: Text('제목')),
                         DataColumn(label: Text('작성자')),
-                        DataColumn(label: Text('작성일자')),
+                        DataColumn(label: Text('완료일자')),
                       ],
                       rows: List<DataRow>.generate(itemData.length,(index)
                       {
@@ -335,7 +336,7 @@ class _AppPage03State extends State<AppPage03> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Container(
-                                          child: Text('${item.inputdate}',
+                                          child: Text('${item.enddate}',
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: SOFT_BLUE,

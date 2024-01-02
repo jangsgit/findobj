@@ -210,17 +210,13 @@ class _AppPage02State extends State<AppPage02> {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: TextButton(onPressed: (){
-
                   setState(() {
-
                     itemlist_getdata();
-
                   });
                   /*searchBook(_etSearch.text);*/
                   /*searchBook2(_etSearch2.text);*/
                 }, child: Text('검색하기')),
               ),
-
             ],
           )
         ],

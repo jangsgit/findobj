@@ -10,6 +10,7 @@ class itemlist_model{
   late var flagnm;
   late var endmemo;
   late var boxpass;
+  late var enddate;
 
   var seq;
 
@@ -17,7 +18,7 @@ class itemlist_model{
 
   itemlist_model({
     this.seq,  this.custcd,   this.flag,  this.inputdate, this.itemsubject, this.pernm,
-    this.itemmemo, this.location, this.flagnm, this.endmemo, this.boxpass
+    this.itemmemo, this.location, this.flagnm, this.endmemo, this.boxpass, this.enddate
   });
 }
 
