@@ -79,7 +79,7 @@ class _Home1PageState extends State<TabHomePage> {
         appBar: AppBar(
             centerTitle: true,
             systemOverlayStyle: SystemUiOverlayStyle.light,
-            title: Image.asset(LOCAL_IMAGES_URL+'/logo.png', height: 24, color: Colors.white),
+            title: Text('현재 칭찬 포인트 : ' +  _totpoint.toString() + '점 입니다.'),
             backgroundColor: _color1,
             actions: <Widget>[
               IconButton(
@@ -114,54 +114,40 @@ bottomNavigationBar: SizedBox.shrink(),
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 7),
-                    child: Hero(
-                        tag: 'profilePicture',
-                        child: ClipOval(
-                          child: buildCacheNetworkImage(url: GLOBAL_URL+'/user/avatar.png', width: 30),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 7),
+                      child: Hero(
+                          tag: 'profilePicture',
+                          child: ClipOval(
+                            child: buildCacheNetworkImage(url: GLOBAL_URL+'/user/avatar.png', width: 30),
+                          ),
                         ),
-                      ),
-                  ),
-                  start(),
-                  Text(  _usernm ,
-                    style: TextStyle(
-                        color: SOFT_BLUE,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                    Text(' 님 반갑습니다.       현재 적립 포인트는 '  ,
+                    ),
+                    start(),
+                    Text(  _usernm ,
                       style: TextStyle(
-                          color: _color2,
+                          color: SOFT_BLUE,
+                          fontWeight: FontWeight.bold,
                           fontSize: 16),
-                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  Text(   _totpoint.toString() ,
-                    style: TextStyle(
-                        color: SOFT_BLUE,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text('점 입니다.  '  ,
-                    style: TextStyle(
-                        color: _color2,
-                        fontSize: 16),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                      Text(' 님 반갑습니다.  '  ,
+                        style: TextStyle(
+                            color: _color2,
+                            fontSize: 16),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
 
-                ],
+                  ],
+              ),
             ),
-          ),
-            ),
+         ),
           Padding(
             padding: const EdgeInsets.only(right: 17,),
             child: Container(
@@ -218,7 +204,8 @@ bottomNavigationBar: SizedBox.shrink(),
           bottom: 0,
           left: 0,
           right: 0,
-          child: Row(
+          child:
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: _bannerData.map((item) {
               int index = _bannerData.indexOf(item);
